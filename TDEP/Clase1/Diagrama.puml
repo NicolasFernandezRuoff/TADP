@@ -1,0 +1,35 @@
+@startuml
+class Guerrero implements Defensor{
+    - pot_ofenciovo
+    + atacar(otroIndividio) : void
+}
+
+class Muralla implements Defensor { 
+
+}
+
+interface Defensor{
+    - energia
+    - port_Defencivo
+    + SufrirDanio(Danio) : Void
+}
+
+class Guerrero1 implements Defensor1{
+    - pot_ofenciovo
+    + atacar(otroIndividio) : void
+}
+
+class Muralla1 implements Defensor1 {
+
+}
+
+interface Defensor1{
+    - energia
+    - port_Defencivo
+    + SufrirDanio(Danio) : Void
+}
+class mmisil implements atacante{
+
+}
+interface atacante {}
+@enduml
