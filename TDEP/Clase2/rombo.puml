@@ -1,7 +1,0 @@
-@startuml
-class a{}
-class b implements a{}
-class c implements a{}
-class d implements b,c {}
-
-@enduml
