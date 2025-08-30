@@ -50,6 +50,7 @@ Utilizaremos la consola `pry`.
 |`unMetodo.arity`| Dice la cantidad de parámetros de ese método|-|
 |`unObjeto.method(:unMetodo).receiver`| Devuelve a quién está bindeado un método |-|
 |`unMetodoNoBindeado.owner`| Dice la clase a la que pertenece el metodo, **quien implementó el método** |-|
+| `unObjeto.define_method('nombre') {codigo}`| Metodo para definir metodos en tiempo de ejecucion| -|
 ---
 #### Variables de Instancia
 |Comando|Funcionalidad|Detalles|
@@ -64,9 +65,13 @@ Utilizaremos la consola `pry`.
     - cuando hacemo `unObjeto.interface_variable_set` solo te devuelve los que no esta en nill(null) o esten instanciados (Aunque tenga sea null)
 - Todo atributo se define en nill y no es conocido por el sistema, hasta que el usuairo lo "instancia"
 - Hacer `unaClase.class` devuelve la clase a la que pertenece. Al sumarle a la clase perteneciente métodos, no se le agregan a la clase a la que pertence porque ensuciaría el ecosistema. 
+- El `methods` es para objetos y te devuelve los metodos que entiende y el `unObjeto.intance_methods` es para las clases 
+- Para usar el `call` sirve para hacer obtener un metodo que puede o no estar asociado a una clase y con el `unObjeto.call(methods)` puedo hacer que un objeto ejecute un metodo que puede o no tener por herencia osea
+    - Ejemplo basico tengo la clase A que tiene el un metodo `hola` yo obtengo este metodo y despues le digo a la clase B que es totalmente diferente y no tienen relacion le digo `B.call(hola)` y la clase b lo puede ejecutar sin problemas 
 
 
 ## Self Modification en Ruby
+
 - #### Open Classes
 Es posible en cualquier momento redefinir las clases. 
 
@@ -97,6 +102,34 @@ Posibilidad de modificar un tipo, una clase o un objeto para que satisfazga las 
 ## Metamodelo en Ruby
 Siguiendo el ejemplo de Guerreros, el árbol quedaría de esta manera:
 
+#### Metodo Ducapt (O como se escriba)
+- Es 1 paso azul N pasos rojos (Caso de java)
+    - Paso azul del objeto a la clase (=>)
+    - Paso rojo de clase hijo a clase padre (->)
+
+
+
+### Copiar foto del video de como es el Metamodelo
+
+- 1 paso negra y N paso rojos (Caso de Ruby) 
+    - Paso azul del objeto a la clase (=>) ==> azul == negra + roja
+    - Paso rojo de clase hijo a clase padre (->)
+    - Paso negro de clase hermano (..>) 
+    - En este caso ya que se debe cortar la recursividad se agrega nill(objeto) que hereda de NilClass y nillClas herea de Objetos 
+        - En este caso no es corta la recursividad 
+        nill => NillClass -> Object -> BasicObjet -> nill => NillObjet(Ahi corta la recusrsividad)
+    - todas las clases van a una clase `Class`que la class tiene una flecga azul a si misma y la flecha roja a Module y de ahi a Objet (Class => Class -> Module -> Objet)
+    - Si queremos que un metodo lo tengan todas las clases se pueden poner un metodo en Objet y eso hace que **TODOS** los metodos tengan esos 
+    - Pero si se queire hacer que que una clase tenga metodos solo para el entonce se asocia una Clase A con una clase #Clase A y ellps apunto a class y despues de estos #Clase A si necesitan su clase personal (##Clase a) lo resuelve con lazy los va generando mendiante pasa. Y todas las # se conectan entre si para heredar metodos
+        - A ..> #a => Class && #a -> Class
+        - Esto tambien pasa con sus objetos "a" : a ..> #a -> a || a => a
+
+Notas:
+ - SI quiere hacer que todas las clases tengan un metodo es tan simple como poner en eobjet por ejemplo quiero que pongamos `toString()` que la implemento dentro de objet y ya TODAS las clases creadas van a tener ese metodo
+ - No tiene recursividad infinita ya que lo unico que puede ser infinito lo arregla con lazy
+ - Si quiero hacer que poner un metodo que solo lo tenga una clase se agrega en en su #class 
+
 
 ### Objeto auto clase
 En Ruby todo es un objeto, los números, strings, arrays y también las Clases. Las clases mismas son instancias de Class. Clases tienen singleton_class Como son objetos, también pueden tener métodos definidos “solo para ellas”.
+
