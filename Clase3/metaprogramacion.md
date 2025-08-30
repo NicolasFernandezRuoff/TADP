@@ -1,12 +1,13 @@
 # Metaprogramación en Ruby
 ---
 ## ¿Qué es la metaprogramación?
-Es un proceo o práctica por la cual se escriben programas que generan, manipulan o utilizan otros programas.
+Es un proceo o práctica por la cual se escriben programas que generan o modifique otros programas. (No los aplicamos a heraramientas externas)
 
 Algunos ejemplos pueden ser:
 - Compiladores
 - Formateador de código
 - Herramientas de generación de documentación
+- Frameworks (Springboot, Angular, React)
 
 ### ¿Para qué se usa?
 - Desarrollo de frameworks y herramientas
@@ -18,9 +19,12 @@ Es *metaprogramar* en el mismo lenguaje que los programas.
 #### Tipos de Reflection
 - **Introspection**: herramientas del lenguaje para poder analizarse a sí mismo. Que el programa se vea a sí mismo o que revise a otro programa.
 - **Self-modification**: el programa puede cambiar el comportamiento, puede modificarse a sí mismo.
-- **Intercession**: capacidad en un lenguaje de agregar una característica nueva que no esté previamente.
+- **Intercession**(No la vemos): capacidad en un lenguaje de agregar una característica nueva que no esté previamente.
+
+- - -
 
 ## Metaprogramación en Ruby
+
 Utilizaremos la consola `pry`.
 ### Comandos pry
 | Comando |Funcionalidad | Detalles |
@@ -36,10 +40,10 @@ Utilizaremos la consola `pry`.
 |`unaClase.singleton_class`| Permite obtener la eigenclass de unaClase, *metaclass* **el objeto unaClase** | Puede servir para ver los métodos de clase, no de instancia|
 |`unObjeto.methods.include? :method`| Dice si los métodos incluyen un método |-|
 |`unObjeto.unMetodo`| Llama al método y muestra el valor de retorno|-|
-|`unaClase.instance_methods`| Muestra los métodos que implementa la clase y su superclase |`instance_methods(false)` no incluye a la superclase|
+|`unaClase.instance_methods(Boolean)`| Muestra los métodos que implementa la clase y su superclase |`instance_methods(false)` no incluye a la superclase, viene defoult true|
 |`unaClase.instance_method :unMetodo`| Devuelve un método de esa clase no bindeado a ningún objeto |-|
 |`unMetodoNoBindeado.bind(unObjeto)`| Bindea un método no bindeado a un objeto |No se puede bindear un método a un objeto de una clase que no tenga ese método.|
-|`unObjeto.send(:unMetodo)`| Llama al método y muestra el valor de retorno | Manda un mensaje explícitamente, más tipo **introspection**. Permite llamar a métodos privados. |
+|`unObjeto.send(:unMetodo)`| Llama al método y muestra el valor de retorno | Manda un mensaje explícitamente, más tipo **introspection**. Permite llamar a métodos privados. y en momento de ejecucion podes cambiarlo a comparacion de hacer el `unObjeto.unMetodo` pudiendo recibir por un parametro el `unMetodo` guardado como unba variable y enviarlo por send |
 |`unObjeto.method(:unMetodo)`| Devuelve una instancia de method| Un método bindeado a la instancia. Lo puedo guardar |`variable = unObjeto.method(:unMetodo)`|
 |`unMetodo.call`|  Llama a un método bindeado a una instancia |-|
 |`unMetodo.parameters`| Dice todos los metodos de ese objeto| Los muestra como una lista de tuplas `[[:req, :un_danio]]`, el primero nos dice qué tipo de parametro es y el otro el nombre. |
@@ -56,6 +60,9 @@ Utilizaremos la consola `pry`.
 
 #### Notas
 - El `:unMetodo` es un símbolo, un String.
+- El simbolo `:@` es la forma de definiar atributos 
+    - cuando hacemo `unObjeto.interface_variable_set` solo te devuelve los que no esta en nill(null) o esten instanciados (Aunque tenga sea null)
+- Todo atributo se define en nill y no es conocido por el sistema, hasta que el usuairo lo "instancia"
 - Hacer `unaClase.class` devuelve la clase a la que pertenece. Al sumarle a la clase perteneciente métodos, no se le agregan a la clase a la que pertence porque ensuciaría el ecosistema. 
 
 
@@ -90,7 +97,6 @@ Posibilidad de modificar un tipo, una clase o un objeto para que satisfazga las 
 ## Metamodelo en Ruby
 Siguiendo el ejemplo de Guerreros, el árbol quedaría de esta manera:
 
-![alt text](image-20.png)
 
 ### Objeto auto clase
 En Ruby todo es un objeto, los números, strings, arrays y también las Clases. Las clases mismas son instancias de Class. Clases tienen singleton_class Como son objetos, también pueden tener métodos definidos “solo para ellas”.
