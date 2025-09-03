@@ -107,7 +107,7 @@ Siguiendo el ejemplo de Guerreros, el árbol quedaría de esta manera:
     - Paso azul del objeto a la clase (=>)
     - Paso rojo de clase hijo a clase padre (->)
 
-
+<img src="Captura.PNG"></img>
 
 ### Copiar foto del video de como es el Metamodelo
 
