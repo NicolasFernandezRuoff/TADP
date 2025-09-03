@@ -137,7 +137,8 @@ lam.call (2,3,4)
 
 En resumen:  
 - `eval` = ejecuta strings como código.  
-- `instance_eval` = mete el bloque dentro de **una instancia**.  
+- `instance_eval` = mete el bloque dentro de **una instancia**.
+- `instance_exec` = me permite pasar argumento  
 - `class_eval` = mete el bloque dentro de **la clase/módulo**.  
 
 ---
