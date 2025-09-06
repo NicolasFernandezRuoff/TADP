@@ -1,6 +1,17 @@
 # Metaprogramacion 
 ---
+##### Para vos BB (Valen)
+<span style="color: red;">
+    Dentro del codigo todo lo que esta encerrado entre <br>
+    #-------- -------- -------- ----------<br>
+    codigo<br>
+      #-------- -------- -------- ----------<br>
+      <br>
+    Y los comentarios en rojo
+</span>
 
+
+#### Otro ejemplo al de la clase => Fue con Guerreros
 ``` Ruby
 #ir_de_Comprass 
 def ir_de_compras_con(un_carrito)
@@ -27,7 +38,28 @@ class RegistradorDeMensajes < BasicObject
     #Guardar los datos en mi variable objetos recibidos
     @objeto_original.send(nombre_mensaje, *argumentos, &bloque)
     #Volverle a enviar el metodo a CarritoDeCompra
+
+
+    #------------ ------------ ------------ ---------- ---------------  
+    # Si quiro menejar solo algunos metodso puedo hacer 
+    if nombre.to_s.start_with?("Axel_") # Solo los que arrancan con Axel_
+        "Hola!"
+
+    Super # Pongo super para manejar los errores de los errores que NO arran con "Axel_"
+      #-------- -------- -------- ----------
   end
+
+
+  #-------- -------- -------- ----------
+  #El iclude_private es para poder poder llamar a atributos privados
+  # Esto es para cuando hacemos un respon_to y no tiene el metodo entonces 
+  # llama a este metodo para poder redifinir el repond_to
+  def respond_to_missing? (nombre, include_private)
+    nombre.to_s.start_whith?("Axle_") || Super
+    end
+  end
+
+    #-------- -------- -------- ----------
 
   # Para sabes si debe devolver True o False caso (1)
   def method_tomissing?(nombre_mensaje, include_private = false)
@@ -63,17 +95,94 @@ puts registradorDeMensajes.mesajes_recibidos
     # Objet (Tiene definido el metodo is_a) puedo hacer que herede de BasicObjet
 
 ```
+<span style="color: red;">
+    Se usa method_missing cuando el que programa no sabe que metodos el objeto quiere que entienda<br>
+    Por lo tanto el method_missin es UN ULTIMO RECURSO<br>
+    <ul>
+        <li>Se utiliza para patrones creacionesles
+        <li>Simpre que definas method_mising debes definir el respond_to_missing 
+    </ul>
+</span><br>
 #### En resumen
 * Para mantener consisnte el `respond_to?` se debe redifinir el `method_mising` y usualmente el `respond_to_mising?`
 * Simpre delegar a `super` si no sabesmo responder el mensaje (Caso (1)) 
 
---- 
+---
+<span style="color: red;">  Explicacion del contexto en la clase</span>
+
+### Contexto 
+Que cosas hay dentro del contexto ???
+ * Varaibles locales 
+ * Variables de instancia
+ * Self es parte del contexo
+
+ Nota:
+ * Los `if` no generan nuevo conteto
+ * Cada ejecucion de un bloque tiene su propio contexto 
+ * `define_method` no cambia el contexto definiendo un metodo, y es un **metodo para poder utilizar variables de la clase con el contexto de la calse** 
+ ``` Ruby
+    puts self # Printea main
+    Class C1 
+        puts self # C1
+
+        def m1
+            puts self # Capacidad de C1 de tener un metodo
+        end
+    end
+    C1.new.m1
+ ```
+
+Para poder usar variables de las calses ya que no se pueden ustilizar 
+ ``` Ruby
+Class C1 
+    @X = 10
+    puts @x # Muestra 10 
+
+    def m1 
+        puts @x.inspect # muestra nill
+    end
+
+    #-----------------
+    #Para solucionar esto podemos hacerlo 2 formas
+    #Getter
+    def self.x # Getter
+        @x
+    end
+
+    #-------- o ------------
+    @@x = 15
+    def 
+        puts @@x # Cobb el doble @@ muestra el 15
+    end
+
+
+    #---------- 0 ---------------
+    # Caso especifico del bloque 
+    self # Mostrando main
+    p4 = proc{ self } # Guarda el contexto en el mometo
+    # Manteniendo el main dentro del slef 
+
+ ``` 
+
 ## Bloques, Landas y Closueres
 
 ### Bloque / Closers
-* Todos los metodos en ruby recibeen un bloque 
-* Toda variable creada dentro de un bloque vive SOLO dentero del bloque pero pueden redifinir variables del codigo a comparacion de las metodos 
+* Todos los metodos admiten/aceptan un bloque
+``` Ruby
+    def m(p1, p2, p3,p &bloque)
+        p1 + p2 + p3
+    end
 
+    puts (m(1,2,3)) do
+        puts "dentro del bloque"
+    end)
+        
+    # Pero no se pasa el bloque aunque se podria pasar y FUNCIONA 
+```
+
+* Toda variable creada dentro de un bloque vive SOLO dentero del bloque pero pueden redifinir variables del codigo a comparacion de las metodos 
+* Todos los proc es un bloque "envuelto"
+* Los `&blok` lo lleva de un `proc` a `bloque` por ejemplo `[1,2,3].select(&blok)` en este caso recibiendo un bloque 
 ``` Ruby
     # Pirmera forma de ejecutarlo
     def m1
@@ -93,7 +202,7 @@ puts registradorDeMensajes.mesajes_recibidos
     # Opcion 2 se utiliza cuando hay una sola linea
     m1 {puts "chau"}
 
-    # Se pueden guardar esto bloques de la forma 
+    # Se pueden guardar esto bloques de la forma cobn el `proc`
     bloque = proc { funcion } #Ejemplo Imprimir_hola = prox { puts "hola" }
     # Y se llama con 
     bloque.call ## Ejemplo Imprimir_hola.call
@@ -114,7 +223,7 @@ puts registradorDeMensajes.mesajes_recibidos
 ``` 
 ---
 ### Landa
-* Principal diferencia es que a las lambda no se le puieden pasar argumnentos de mas  en el caso de abajo si es lambda **rompe** pero en el caso de lo bloquess devuelveria `nill 2 2`
+* Principal diferencia es que a las lambda no se le pupueden pasar argumnentos de mas o de menos en el caso de abajo si es lambda **rompe** pero en el caso de lo bloquess devuelveria `nill 2 2`
 
 
 ``` Ruby
