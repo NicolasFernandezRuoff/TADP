@@ -236,11 +236,11 @@ lam.call (2,3,4)
 ---
 
 #### `instance_eval` vs. `class_eval` (Lo podemos desarrollar mas en la clase)
-| Método              | Contexto donde se evalúa el código              | `self` dentro del bloque             | Uso típico |
-|---------------------|------------------------------------------------|--------------------------------------|------------|
+| Método              | Contexto donde se evalúa el código              | `self` dentro del bloque             | Uso típico | Ejemplo
+|---------------------|------------------------------------------------|--------------------------------------|------------|------------------------|
 | `eval`              | Evalúa un string en el contexto actual (scope global o local) | No cambia, se mantiene el actual     | Ejecutar código dinámico escrito como string (⚠️ peligroso si viene de usuarios). |
 | `instance_eval`     | Evalúa un bloque **en el contexto de una instancia** | Ese objeto en particular (`self = objeto`) | Definir métodos singleton o acceder a variables privadas de un objeto. |
-| `instance_exec`     | Evalúa un bloque **en el contexto de una instancia**, **pero permite pasar parámetros** | Ese objeto en particular (`self = objeto`) | Ejecutar un bloque con acceso al objeto y parámetros adicionales. |
+| `instance_exec`     | Evalúa un bloque **en el contexto de una instancia**, **pero permite pasar parámetros** | Ese objeto en particular (`self = objeto`) | Ejecutar un bloque con acceso al objeto y parámetros adicionales. Si el bloque no tiene variables para llenar es como pasar **No le importa** el contexto | ```p2 = proc {"HOLA"} pepe.instance_exect(&p2) # Te ejecuta el bloque en el contexto de pepe ```|
 | `class_eval` / `module_eval` | Evalúa un bloque **dentro del contexto de una clase o módulo** | La clase/módulo en sí (`self = Clase`) | Abrir clases dinámicamente, agregar métodos de instancia o macros de DSL. |
 
 
@@ -249,5 +249,4 @@ En resumen:
 - `instance_eval` = mete el bloque dentro de **una instancia**.
 - `instance_exec` = me permite pasar argumento  
 - `class_eval` = mete el bloque dentro de **la clase/módulo**.  
-
 ---
