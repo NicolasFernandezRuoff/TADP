@@ -3,17 +3,34 @@ trait Defesnor { // Misin de toda la vida pero se llama trati
     def potencialDefensivo : Int
     def recibirDanio(danio: Int) : Unit
 }
+type Atacable{ // Sirve para abstraer lo que deberia estar en la firma de atacarA
+// Esto te permite no tener que importarlo en que solo a lo que le llegue a atacar tiene 
+// que tener estos 2 metodos
+        def potencialDefensivo : Int
+        def recibirDanio(danio: Int) : Unit
+}
 
 class Guerrero(var potencialOfensivo: Int = 20 ) extends Defesnor {
     
     var energia: Int = 100
     var potencialDefensivo: Int = 10
+
+    def rexibirDanio(danio: Int) = {
+        this.energia = (this.energia - danio).max(0)
+    }
     
     // Unit es igual a void
     // Val son las constantes
-
+// Aca estas anclado a lo suqe te llega tiene que ser SI o SI un defensor
     def atacaA(otro: Defesnor): Unit = {
         if(otro.potencialDefensivo < this.potencialOfensivo) {
+            otro.recibirDanio(this.potencialOfensivo - otro.potencialOfensivo )
+        }
+    }
+// La ventaja de esto es que no me hace falta llegar algo que sea defensor solo que tenga
+// Los metodos que tiene que rexibir 
+    def atacaA(otro: Atacable) = {
+            if(otro.potencialDefensivo < this.potencialOfensivo) {
             otro.recibirDanio(this.potencialOfensivo - otro.potencialOfensivo )
         }
     }
