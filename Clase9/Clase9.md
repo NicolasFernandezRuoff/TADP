@@ -7,6 +7,7 @@
         
 #### Aristas del paradigma funcional 
 - Orden superior
+- Polimosrfismo parametrico
 - Pureza -> Falta de efecto  y trasparencia referrencial
 
 --- 
