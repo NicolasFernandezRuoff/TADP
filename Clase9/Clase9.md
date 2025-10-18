@@ -27,7 +27,7 @@
 * A veces si sse quieren agregar metodos a una clase polimorfica se pueden implementar el **patron visitros** ya que sino es muy dificil mantenerlo. Pero... al quererlo implementar es un quilombo entonces termnando cayendo en el **Polimorfismo Parametrico** (Funcional) Con solo un `IF` ya podes arreglatelas pero... rompiendo el encapsulamiento
 
 **Aveces es mejor romper las reglas**
-
+    
 ---
 ## Patron Visitor
 <img src="Visitor_design_pattern.svg.png"></img>
